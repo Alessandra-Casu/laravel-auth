@@ -9,7 +9,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 class ProjectsTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
      *
      * @return void
      */
@@ -19,7 +18,7 @@ class ProjectsTableSeeder extends Seeder
         {
             Project::create([
                 'title' => $faker->words(rand(2, 10), true),
-                'url_image' =>'https://picsum.photos/id/'. rand(1, 270) . '500/400',
+                'url_image' =>'https://picsum.photos/id/'. rand(1, 270) . '/500/400',
                 'content' => $faker->paragraphs(rand(2, 20), true),
             ]);
         }
