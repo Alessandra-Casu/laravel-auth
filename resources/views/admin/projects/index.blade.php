@@ -2,27 +2,27 @@
 
 @section('contents')
 
-    <h1>Projects</h1>
+    <h1>Project</h1>
 
-    {{-- @if (session('delete_success'))
-        @php $post = session('delete_success') @endphp
+    @if (session('delete_success'))
+        @php $project = session('delete_success') @endphp
         <div class="alert alert-danger">
-            La post "{{ $post->titolo }}" è stata eliminata
-            <form
-                action="{{ route("admin.posts.restore", ['post' => $post]) }}"
-                    method="post"
+            Il progetto "{{ $project->title }}" è stato eliminato per sempre
+            {{-- <form
+                action="{{ route("admin.project.restore", ['project' => $project]) }}"
+                    method="project"
                     class="d-inline-block"
                 >
                 @csrf
                 <button class="btn btn-warning">Ripristina</button>
-            </form>
+            </form> --}}
         </div>
     @endif
 
-    @if (session('restore_success'))
-        @php $post = session('restore_success') @endphp
+    {{-- @if (session('restore_success'))
+        @php $project = session('restore_success') @endphp
         <div class="alert alert-success">
-            La post "{{ $post->titolo }}" è stata ripristinata
+            La post "{{ $project->title }}" è stata ripristinata
         </div>
     @endif --}}
 
@@ -30,8 +30,8 @@
         <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Titolo</th>
-                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Image url</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -42,22 +42,44 @@
                     <td>{{ $project->title }}</td>
                     <td>{{ $project->url_image }}</td>
                     <td>
-                        <a class="btn btn-primary" href="{{ route('admin.projects.show', ['project' => $project->id]) }}">View</a>
-                        <a class="btn btn-warning" href="{{ route('admin.projects.edit', ['project' => $project->id]) }}">Edit</a>
-                        <form
-                            action="{{ route('admin.projects.destroy', ['project' => $project->id]) }}"
-                            method="project"
-                            class="d-inline-block"
-                        >
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
+                        <a class="btn btn-primary" href="{{ route('admin.projects.show', ['project' => $project]) }}">View</a>
+                        <a class="btn btn-warning" href="{{ route('admin.projects.edit', ['project' => $project]) }}">Edit</a>
+                        <button type="button" class="btn btn-danger js-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $project->id }}">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteModalLabel">Delete confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <form
+                        action=""
+                        data-template="{{ route('admin.projects.destroy', ['project' => '*****']) }}"
+                        method="post"
+                        class="d-inline-block"
+                        id="confirm-delete"
+                    >
+                        @csrf
+                        @method('delete')
+                        <button class="btn btn-danger">Yes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{ $projects->links() }}
 
