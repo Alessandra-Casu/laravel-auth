@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProjectController extends Controller
 {
     private $validations = [
         'title'     => 'required|string|min:5|max:100',
+        'category_id' => 'required|integer|exists:categories,id',
         'url_image' => 'required|url|max:200',
         'content'   => 'required|string',
     ];
@@ -19,6 +21,7 @@ class ProjectController extends Controller
         'min'       => 'Il campo :attribute deve avere almeno :min caratteri',
         'max'       => 'Il campo :attribute non può superare i :max caratteri',
         'url'       => 'Il campo deve essere un url valido',
+        'exists'    => 'Valore non valido',
     ];
     /**
      * Display a listing of the resource.
@@ -39,7 +42,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-     return view(('admin.projects.create'));
+        $categories = Category::all();
+        return view('admin.projects.create', compact('categories'));
     }
 
     /**
@@ -57,9 +61,10 @@ class ProjectController extends Controller
 
         //salvare i dati nel db se validi
         $newProject = new Project();
-        $newProject->title = $data['title'];
-        $newProject->url_image = $data['url_image'];
-        $newProject->content = $data['content'];
+        $newProject->title =         $data['title'];
+        $newProject->category_id =   $data['category_id'];
+        $newProject->url_image =     $data['url_image'];
+        $newProject->content =       $data['content'];
         $newProject->save();
 
         //ridirezionare su una rotta di tipo get
@@ -85,7 +90,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $categories = Category::all();
+        return view('admin.projects.edit', compact('project', 'categories'));
     }
 
     /**
@@ -101,12 +107,13 @@ class ProjectController extends Controller
          $request->validate($this->validations, $this->validation_messages);
 
          $data = $request->all();
-
+// dd($data);  
          //aggiornare i dati nel db se validi
         
-         $project->title     = $data['title'];
-         $project->url_image = $data['url_image'];
-         $project->content   = $data['content'];
+         $project->title       = $data['title'];
+         $project->category_id = $data['category_id'];
+         $project->url_image   = $data['url_image'];
+         $project->content     = $data['content'];
          $project->update();
  
          //ridirezionare su una rotta di tipo get

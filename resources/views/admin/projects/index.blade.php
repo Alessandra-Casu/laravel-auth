@@ -18,6 +18,7 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Title</th>
+                <th scope="col">Category</th>
                 <th scope="col">Image url</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -27,6 +28,7 @@
                 <tr>
                     <th scope="row">{{ $project->id }}</th>
                     <td>{{ $project->title }}</td>
+                    <td>{{ $project->category->name }}</td>
                     <td>{{ $project->url_image }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ route('admin.projects.show', ['project' => $project]) }}">View</a>

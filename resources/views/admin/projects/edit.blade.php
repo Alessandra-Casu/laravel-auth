@@ -14,7 +14,7 @@
         </div>
     @endif --}}
 
-    <form method="Project" action="{{ route('admin.projects.update', ['project' => $project]) }}" novalidate>
+    <form method="post" action="{{ route('admin.projects.update', ['project' => $project]) }}" novalidate>
         @csrf
         @method('put')
 
@@ -28,6 +28,23 @@
                 value="{{ old('title', $project->title) }}"
             >
             @error('title')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+       
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" aria-label="Category" id="category" name="category_id">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}"
+                         @if (old('category_id',$project->category->id) == $category->id) selected     
+                    @endif>{{ $category->name }}</option>
+                @endforeach
+            </select>
+            
+            @error('category_id')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
