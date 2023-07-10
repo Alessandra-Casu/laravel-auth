@@ -2,29 +2,16 @@
 
 @section('contents')
 
-    <h1>Project</h1>
+    <h1>Projects</h1>
 
     @if (session('delete_success'))
         @php $project = session('delete_success') @endphp
         <div class="alert alert-danger">
             Il progetto "{{ $project->title }}" è stato eliminato per sempre
-            {{-- <form
-                action="{{ route("admin.project.restore", ['project' => $project]) }}"
-                    method="project"
-                    class="d-inline-block"
-                >
-                @csrf
-                <button class="btn btn-warning">Ripristina</button>
-            </form> --}}
+
         </div>
     @endif
 
-    {{-- @if (session('restore_success'))
-        @php $project = session('restore_success') @endphp
-        <div class="alert alert-success">
-            La post "{{ $project->title }}" è stata ripristinata
-        </div>
-    @endif --}}
 
     <table class="table table-striped">
         <thead>
@@ -68,7 +55,7 @@
                     <form
                         action=""
                         data-template="{{ route('admin.projects.destroy', ['project' => '*****']) }}"
-                        method="post"
+                        method="project"
                         class="d-inline-block"
                         id="confirm-delete"
                     >
